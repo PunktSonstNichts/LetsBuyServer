@@ -14,3 +14,11 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::group(['middleware' => 'auth'], function () {
+	Route::get('/authenticated', function () {
+		return "you are in";
+	});
+});
+
+Route::post('/user', 'UserController@createUser');
