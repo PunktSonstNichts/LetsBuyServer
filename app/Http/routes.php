@@ -22,7 +22,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/list', 'ListController@createList');
 });
 
-Route::post('/user', 'UserController@createUser');
+Route::post('/user', 'UserController@postUser');
 
 header('Access-Control-Allow-Origin:  *');
 header('Access-Control-Allow-Methods:  POST, GET, OPTIONS, PUT, DELETE');
