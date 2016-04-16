@@ -34,15 +34,12 @@ class UserController extends Controller
             'password' => bcrypt($request['password']),
         ]);
 
-        return response()->json(['api_token' => $api_token]);
+        return response()->json(['api_token' => $api_token])
+        	->header('Access-Control-Allow-Origin', '*')
+        	->header('Access-Control-Allow-Credentials', true);
     }
 
     public function getApiToken(Request $request){
-    	
-    }
-
-    public function getToken()
-    {
 
     }
 
