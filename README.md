@@ -1,4 +1,4 @@
-# LetsBuy
-#CopenHacks project
+# LetsBuyServer
+#CopenHacks project Backend
 
-Hello from Rasmus :D
+Hello from Rasmus!
