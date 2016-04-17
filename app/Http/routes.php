@@ -20,6 +20,8 @@ Route::group(['middleware' => 'auth'], function () {
 		return "you are in";
 	});
 	Route::post('/list', 'ListController@createList');
+	Route::get('/list', 'ListController@getLists');
+	Route::get('/list/{id}', 'ListController@getList');
 });
 
 Route::post('/user', 'UserController@postUser');
