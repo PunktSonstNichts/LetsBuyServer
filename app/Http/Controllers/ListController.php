@@ -19,9 +19,6 @@ class ListController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'due_date' => 'required|date',
-            'items' => 'required|array',
-            'items.*.name' => 'required',
-            'items.*.quantity' => 'required|numeric'
         ]);
 
 		$list = ItemList::create([
@@ -31,11 +28,11 @@ class ListController extends Controller
             'longitude' => $request['longitude'],
         ]);
 
-        foreach ($request['items'] as $item) {
+        foreach ($request['names'] as $key => $item) {
             $i = new Item;
-            $i->name = $item['name'];
+            $i->name = $item;
             $i->save();
-            $list->items()->save($i, ['quantity' => $item['quantity']]);
+            $list->items()->save($i, ['quantity' => $request['quantities'][$key]]);
         }
 
         return response()->json(['success' => true, 'list_id' => $list->id]);
