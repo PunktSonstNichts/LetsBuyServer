@@ -25,7 +25,7 @@ class UserController extends Controller
             'name' => 'max:255',
             'email' => 'email|max:255',
             'api_token' => 'max:60',
-            'password' => 'required|min:6',
+            'password' => 'min:6',
         ]);
         
         if ($validator->fails()) {
