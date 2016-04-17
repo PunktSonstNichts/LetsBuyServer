@@ -24,13 +24,27 @@ class UserController extends Controller
     	$validator = Validator::make($request->all(), [
             'name' => 'max:255',
             'email' => 'email|max:255',
+            'api_token' => 'max:60',
             'password' => 'required|min:6',
         ]);
         
         if ($validator->fails()) {
             return response()->json(['error' => 'User login failed.']);
         }
-    	
+
+        if ($request->has('api_token')) {
+            try{
+                $user = User::where('api_token', $request['api_token'])->firstOrFail();
+                return response()->json([
+                    'api_token' => $user->api_token,
+                    'name' => $user->name,
+                    'picture' => $user->picture
+                ]);
+            } catch (ModelNotFoundException $e) {
+                return response()->json(['error' => 'User login failed.']);
+            }
+        }
+
         $api_token = str_random(60);
         try {
             $user = User::whereRaw("name = '".$request['name']."' OR email = '".$request['email']."'")->firstOrFail();
@@ -46,7 +60,11 @@ class UserController extends Controller
             ]);
         }
 
-        return response()->json(['api_token' => $user->api_token]);
+        return response()->json([
+            'api_token' => $user->api_token,
+            'name' => $user->name,
+            'picture' => $user->picture
+        ]);
     }
 
 }
