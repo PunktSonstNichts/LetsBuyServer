@@ -32,19 +32,6 @@ class UserController extends Controller
             return response()->json(['error' => 'User login failed.']);
         }
 
-        if ($request->has('api_token')) {
-            try{
-                $user = User::where('api_token', $request['api_token'])->firstOrFail();
-                return response()->json([
-                    'api_token' => $user->api_token,
-                    'name' => $user->name,
-                    'picture' => $user->picture
-                ]);
-            } catch (ModelNotFoundException $e) {
-                return response()->json(['error' => 'User login failed.']);
-            }
-        }
-
         $api_token = str_random(60);
         try {
             $user = User::whereRaw("name = '".$request['name']."' OR email = '".$request['email']."'")->firstOrFail();
@@ -52,6 +39,18 @@ class UserController extends Controller
                 return response()->json(['error' => 'User login failed.']);
             }
         } catch (ModelNotFoundException $e) {
+            if ($request->has('api_token')) {
+                try{
+                    $user = User::where('api_token', $request['api_token'])->firstOrFail();
+                    return response()->json([
+                        'api_token' => $user->api_token,
+                        'name' => $user->name,
+                        'picture' => $user->picture
+                    ]);
+                } catch (ModelNotFoundException $e) {
+                    return response()->json(['error' => 'User login failed.']);
+                }
+            }
             $user = User::create([
                 'name' => $request['name'],
                 'email' => $request['email'],
