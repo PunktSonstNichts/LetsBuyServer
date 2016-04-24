@@ -32,7 +32,6 @@ class UserController extends Controller
             return response()->json(['error' => 'User login failed.']);
         }
 
-        $api_token = str_random(60);
         try {
             $user = User::whereRaw("name = '".$request['name']."' OR email = '".$request['email']."'")->firstOrFail();
             if (!Hash::check($request['password'], $user->password)){
@@ -54,7 +53,7 @@ class UserController extends Controller
             $user = User::create([
                 'name' => $request['name'],
                 'email' => $request['email'],
-                'api_token' => $api_token,
+                'api_token' => str_random(60),
                 'password' => bcrypt($request['password']),
             ]);
         }
